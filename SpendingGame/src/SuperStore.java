@@ -4,6 +4,7 @@ public class SuperStore extends PApplet {
     Store store;
     Player player;
     Button[] buttons;
+    String message = "";
 
     public void settings() {
         size(800, 600);
@@ -11,7 +12,7 @@ public class SuperStore extends PApplet {
 
     public void setup() {
         store = new Store();
-        player = new Player(400000000000L); // Player starts with 400 billion dollars
+        player = new Player(400000000000L); 
         store.initializeItems();
         initializeButtons();
     }
@@ -30,6 +31,7 @@ public class SuperStore extends PApplet {
         background(255);
         displayStore();
         drawButtons();
+        displayMessage(); 
     }
 
     void displayStore() {
@@ -39,6 +41,15 @@ public class SuperStore extends PApplet {
         text("Welcome to SuperStore!", 50, 30);
         textSize(18);
         text("Your Balance: $" + player.getBalance(), 50, 70);
+    }
+
+    void displayMessage() {
+        if (!message.isEmpty()) {
+            fill(255, 0, 0); // Red color for error messages
+            textSize(18);
+            textAlign(LEFT, TOP);
+            text(message, 50, height - 50);
+        }
     }
 
     void drawButtons() {
@@ -52,9 +63,10 @@ public class SuperStore extends PApplet {
             if (buttons[i].isMouseOver()) {
                 Item item = store.items.get(i);
                 if (player.purchaseItem(item)) {
+                    message = ""; 
                     println("You bought: " + item.getName());
                 } else {
-                    println("Not enough balance!");
+                    message = "Not enough balance!";
                 }
             }
         }
